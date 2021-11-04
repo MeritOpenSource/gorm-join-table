@@ -1,0 +1,171 @@
+databaseChangeLog:
+  - changeSet:
+      - id: 1
+        author: kevin@gomerits.com
+        changes:
+          - sql:
+              sql: create schema checkin
+  - changeSet:
+      - id: 2
+        author: kevin@gomerits.com
+        changes:
+          - createTable:
+              tableName: events
+              schemaName: checkin
+              columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                      nullable: false
+                      primaryKey: true
+                      primaryKeyName: event_pkey
+                - column:
+                    name: name
+                    type: TEXT
+                    constraints:
+                      nullable: false
+                - column:
+                    name: created_at
+                    type: DATETIME
+                    constraints:
+                      nullable: false
+                - column:
+                    name: updated_at
+                    type: DATETIME
+                    constraints:
+                      nullable: true
+                - column:
+                    name: deleted_at
+                    type: DATETIME
+                    constraints:
+                      nullable: true
+          - createTable:
+              tableName: kiosks
+              schemaName: checkin
+              columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    constraints:
+                      nullable: false
+                      primaryKey: true
+                      primaryKeyName: kiosk_pkey
+                    autoIncrement: true
+                - column:
+                    name: name
+                    type: TEXT
+                    constraints:
+                      nullable: false
+                - column:
+                    name: created_at
+                    type: DATETIME
+                    constraints:
+                      nullable: false
+                - column:
+                    name: updated_at
+                    type: DATETIME
+                    constraints:
+                      nullable: true
+                - column:
+                    name: deleted_at
+                    type: DATETIME
+                    constraints:
+                      nullable: true
+  - changeSet:
+      - id: 3
+        author: kevin@gomerits.com
+        changes:
+          - createTable:
+              tableName: kiosk_events
+              remarks: A join table between kiosks and events
+              schemaName: checkin
+              columns:
+                - column:
+                    name: kiosk_id
+                    type: BIGINT
+                    constraints:
+                      pimaryKey: true
+                      pimaryKeyName: pk_kiosk_events
+                      nullable: false
+                      foreignKeyName: fk_kiosk_id
+                      references: checkin.kiosks(id)
+                - column:
+                    name: event_id
+                    type: BIGINT
+                    constraints:
+                      primaryKey: true
+                      pimaryKeyName: pk_kiosk_events
+                      nullable: false
+                      foreignKeyName: fk_event_id
+                      references: checkin.events(id)
+  - changeSet:
+      - id: 4
+        author: kevin@gomerits.com
+        changes:
+          - createTable:
+              tableName: checkins
+              remarks: Where checkins are recorded.
+              schemaName: checkin
+              columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                      nullable: false
+                      primaryKey: true
+                      primaryKeyName: checkin_pkey
+                - column:
+                    name: name
+                    type: TEXT
+                    constraints:
+                      nullable: false
+                - column:
+                    name: checkin_datetime
+                    type: DATETIME
+                    constraints:
+                      nullable: false
+                - column:
+                    name: kiosk_id
+                    type: BIGINT
+                    constraints:
+                      nullable: false
+                - column:
+                    name: event_id
+                    type: BIGINT
+                    constraints:
+                      nullable: false
+                - column:
+                    name: created_at
+                    type: DATETIME
+                    constraints:
+                      nullable: false
+                - column:
+                    name: updated_at
+                    type: DATETIME
+                    constraints:
+                      nullable: true
+                - column:
+                    name: deleted_at
+                    type: DATETIME
+                    constraints:
+                      nullable: true
+          # You have to add a unique key constraint before you can add a composite key.
+          - addUniqueConstraint:
+              schemaName: checkin
+              tableName: kiosk_events
+              columnNames: kiosk_id, event_id
+              constraintName: kiosk_id_event_id_unique_constraint
+          # This foreignKeyConstraint is technically not required to create a new checkin.
+          # However, it accurately shows how the checkins tables relates to the kiosk_event table
+          # and is required to populate a kioskEvent's checkins if you want to edit them in the future.
+          - addForeignKeyConstraint:
+              baseTableSchemaName: checkin
+              baseTableName: checkins
+              baseColumnNames: event_id, kiosk_id
+              constraintName: fk_kiosk_event_id
+              referencedTableSchemaName: checkin
+              referencedTableName: kiosk_events
+              referencedColumnNames: event_id, kiosk_id
