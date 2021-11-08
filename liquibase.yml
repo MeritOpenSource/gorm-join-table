@@ -1,12 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      - id: 1
+      - id: 1-create-schema
         author: kevin@gomerits.com
         changes:
           - sql:
               sql: create schema checkin
   - changeSet:
-      - id: 2
+      - id: 2-create-events-and-kiosks-table
         author: kevin@gomerits.com
         changes:
           - createTable:
@@ -74,7 +74,7 @@ databaseChangeLog:
                     constraints:
                       nullable: true
   - changeSet:
-      - id: 3
+      - id: 3-create-join-table
         author: kevin@gomerits.com
         changes:
           - createTable:
@@ -101,7 +101,7 @@ databaseChangeLog:
                       foreignKeyName: fk_event_id
                       references: checkin.events(id)
   - changeSet:
-      - id: 4
+      - id: 4-create-checkins-table
         author: kevin@gomerits.com
         changes:
           - createTable:
