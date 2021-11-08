@@ -34,12 +34,35 @@ func main() {
 	verifyForeignKey(db)
 
 	kioskEvent := getKioskEvent(1, 1, db)
+	fmt.Println("Checkins")
 	fmt.Println(kioskEvent.Checkins)
+	fmt.Println("Kiosks")
+	fmt.Println(getKiosk(1, db))
+	fmt.Println("Event")
+	fmt.Println(getEvent(1, db))
+}
+
+func getEvent(eventID uint, db *gorm.DB) model.Event {
+	event := model.Event{ Model: gorm.Model{ID: eventID}}
+	result := db.Preload("Kiosks").First(&event)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+	return event
+}
+
+func getKiosk( kioskID uint, db *gorm.DB) model.Kiosk {
+	kiosk := model.Kiosk{ Model: gorm.Model{ID: kioskID}}
+	result := db.Preload("Events").First(&kiosk)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+	return kiosk
 }
 
 func getKioskEvent(kioskID, eventID uint, db *gorm.DB) model.KioskEvent {
 	kioskEvent := model.KioskEvent{}
-	result := db.Debug().Preload("Checkins").Where(&model.KioskEvent{KioskID: kioskID, EventID: eventID}).First(&kioskEvent)
+	result := db.Preload("Checkins").Where(&model.KioskEvent{KioskID: kioskID, EventID: eventID}).First(&kioskEvent)
 	if result.Error != nil {
 		panic(result.Error)
 	}
