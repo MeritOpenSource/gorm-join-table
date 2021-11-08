@@ -28,7 +28,7 @@ func Run(db *gorm.DB) error {
 }
 
 func test(db *gorm.DB) error {
-	return validate.All(db, []interface{}{KioskEvent{}, Checkin{}}) // do all this to test that gorm is happy with our liquibase file
+	return validate.All(db, []interface{}{KioskEvent{}, Checkin{}})
 }
 
 func query(db *gorm.DB) error {

@@ -27,7 +27,7 @@ func Run(db *gorm.DB) error {
 }
 
 func test(db *gorm.DB) error {
-	return validate.All(db, []interface{}{Kiosk{}, Event{}, KioskEvent{}} ) // do all this to test that gorm is happy with our liquibase file
+	return validate.All(db, []interface{}{Kiosk{}, Event{}, KioskEvent{}} )
 }
 
 
@@ -48,15 +48,15 @@ func query(db *gorm.DB) error {
 }
 
 func create(db *gorm.DB) error {
-	err  := createEvent(db)
+	err  := createEvent(db, "Exciting Activity!")
 	if err != nil {
 		return err
 	}
-	err = createKiosks(db, "First Kiosk")
+	err = createKiosk(db, "First Kiosk")
 	if err != nil {
 		return err
 	}
-	err = createKiosks(db, "Another Kiosk")
+	err = createKiosk(db, "Another Kiosk")
 	if err != nil {
 		return err
 	}
@@ -88,7 +88,7 @@ func linkKioskAndEvent(kioskID, eventID uint, db *gorm.DB) error {
 	return result.Error
 }
 
-func createKiosks(db *gorm.DB, name string) error {
+func createKiosk(db *gorm.DB, name string) error {
 	kiosk := Kiosk{
 		Name: name,
 	}
@@ -96,9 +96,9 @@ func createKiosks(db *gorm.DB, name string) error {
 	return result.Error
 }
 
-func createEvent(db *gorm.DB) error {
+func createEvent(db *gorm.DB, name string) error {
 	event := Event{
-		Name: "Exciting Activity!",
+		Name: name,
 	}
 	result := db.Create(&event)
 	return result.Error
