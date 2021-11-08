@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"join_table/pkg/model"
 	"join_table/pkg/validate"
@@ -28,10 +29,13 @@ func main() {
 	createEvent(db)
 	createKiosk(db)
 	linkKioskAndEvent(1, 1, db)
+	createCheckins(db)
+
+	verifyForeignKey(db)
 
 	kioskEvent := getKioskEvent(1, 1, db)
-	fmt.Println("KioskEvent")
-	fmt.Println(kioskEvent)
+	fmt.Println("Checkins")
+	fmt.Println(kioskEvent.Checkins)
 	fmt.Println("Kiosks")
 	fmt.Println(getKiosk(1, db))
 	fmt.Println("Event")
@@ -58,11 +62,48 @@ func getKiosk( kioskID uint, db *gorm.DB) model.Kiosk {
 
 func getKioskEvent(kioskID, eventID uint, db *gorm.DB) model.KioskEvent {
 	kioskEvent := model.KioskEvent{}
-	result := db.Where(&model.KioskEvent{KioskID: kioskID, EventID: eventID}).First(&kioskEvent)
+	result := db.Preload("Checkins").Where(&model.KioskEvent{KioskID: kioskID, EventID: eventID}).First(&kioskEvent)
 	if result.Error != nil {
 		panic(result.Error)
 	}
 	return kioskEvent
+}
+
+func createCheckins(db *gorm.DB) {
+	firstCheckin := model.Checkin{
+		EventID:         1,
+		KioskID:         1,
+		CheckinDatetime: time.Time{},
+		Name:            "first checkin",
+	}
+	result := db.Create(&firstCheckin)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+
+	secondCheckin := model.Checkin{
+		EventID:         1,
+		KioskID:         1,
+		CheckinDatetime: time.Time{},
+		Name:            "second checkin",
+	}
+	result = db.Create(&secondCheckin)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+}
+
+func verifyForeignKey(db *gorm.DB) {
+	invalidCheckin := model.Checkin{
+		EventID:         1,
+		KioskID:         2,
+		CheckinDatetime: time.Time{},
+		Name:            "second checkin",
+	}
+	result := db.Create(&invalidCheckin)
+	if result.Error == nil {
+		panic("Expected an error when create a checkin against an invalid event/kiosk pair")
+	}
 }
 
 func linkKioskAndEvent(kioskID, eventID uint, db *gorm.DB) {
