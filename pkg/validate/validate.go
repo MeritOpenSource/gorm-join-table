@@ -11,7 +11,7 @@ import (
 )
 
 func All(db *gorm.DB) error {
-	models := []interface{}{model.Kiosk{}, model.Event{}, model.KioskEvent{}, model.Checkin{}}
+	models := []interface{}{model.Kiosk{}, model.Event{}, model.KioskEvent{}}
 	for i := range models {
 		err := AssertModelMigration(db, models[i])
 		if err != nil {
