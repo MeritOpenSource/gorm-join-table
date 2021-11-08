@@ -1,4 +1,4 @@
-package model
+package checkin
 
 import (
 	"time"

@@ -1,4 +1,4 @@
-package model
+package checkin
 
 type KioskEvent struct {
 	Checkins []Checkin `gorm:"foreignKey:KioskID,EventID;References:KioskID,EventID"`

@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"sort"
 
-	"join_table/pkg/model"
-
 	"github.com/google/go-cmp/cmp"
 	"gorm.io/gorm"
 )
 
-func All(db *gorm.DB) error {
-	models := []interface{}{model.Kiosk{}, model.Event{}, model.KioskEvent{}, model.Checkin{}}
+func All(db *gorm.DB, models []interface{}) error {
 	for i := range models {
 		err := AssertModelMigration(db, models[i])
 		if err != nil {
