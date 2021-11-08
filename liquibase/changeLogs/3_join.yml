@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      - id: 3-create-join-table
+        author: kevin@gomerits.com
+        changes:
+          - createTable:
+              tableName: kiosk_events
+              remarks: A join table between kiosks and events
+              schemaName: checkin
+              columns:
+                - column:
+                    name: kiosk_id
+                    type: BIGINT
+                    constraints:
+                      pimaryKey: true
+                      pimaryKeyName: pk_kiosk_events
+                      nullable: false
+                      foreignKeyName: fk_kiosk_id
+                      references: checkin.kiosks(id)
+                - column:
+                    name: event_id
+                    type: BIGINT
+                    constraints:
+                      primaryKey: true
+                      pimaryKeyName: pk_kiosk_events
+                      nullable: false
+                      foreignKeyName: fk_event_id
+                      references: checkin.events(id)

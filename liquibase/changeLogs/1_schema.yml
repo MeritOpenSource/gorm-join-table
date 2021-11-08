@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      - id: 1-create-schema
+        author: kevin@gomerits.com
+        changes:
+          - sql:
+              sql: create schema checkin
