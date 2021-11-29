@@ -51,7 +51,7 @@ databaseChangeLog:
                     type: DATETIME
                     constraints:
                       nullable: true
-          # You have to add a unique key constraint before you can add a composite key.
+          # You have to add a unique key constraint before you can add a composite foreign key.
           - addUniqueConstraint:
               schemaName: checkin
               tableName: kiosk_events
