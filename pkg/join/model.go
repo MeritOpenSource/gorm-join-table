@@ -4,13 +4,13 @@ import "gorm.io/gorm"
 
 type Event struct {
 	gorm.Model
-	Kiosks []Kiosk `gorm:"many2many:kiosk_events;"`
+	Kiosks []Kiosk `gorm:"many2many:kiosk_events"`
 	Name   string
 }
 
 type Kiosk struct {
 	gorm.Model
-	Events []Event `gorm:"many2many:kiosk_events;"`
+	Events []Event `gorm:"many2many:kiosk_events"`
 	Name   string
 }
 
