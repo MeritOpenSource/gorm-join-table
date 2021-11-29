@@ -15,6 +15,7 @@ func Run(db *gorm.DB) error {
 	fmt.Println("join DB Validation successful")
 	err = create(db)
 	if err != nil {
+		// Create errors if you call it twice.
 		return err
 	}
 	fmt.Println("join db insert successful")
@@ -22,6 +23,9 @@ func Run(db *gorm.DB) error {
 		return err
 	}
 	err = query(db)
+	if err != nil {
+		return err
+	}
 	fmt.Println("join db query successful")
 	return nil
 }

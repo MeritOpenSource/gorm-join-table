@@ -20,10 +20,12 @@ func Run(db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("checkin db insert successful")
 	err = query(db)
 	if err != nil {
 		return err
 	}
+	fmt.Println("checkin db query successful")
 	return nil
 }
 
@@ -83,7 +85,7 @@ func addBadCheckin(db *gorm.DB) error {
 		CheckinDatetime: time.Time{},
 		Name:            "second checkin",
 	}
-	fmt.Println("insert on table \"checkins\" error expected below")
+	fmt.Print("error expected for an insert on table \"checkins\"")
 	result := db.Create(&invalidCheckin)
 	if result.Error == nil {
 		return errors.New("expected an error when create a checkin against an invalid event/kiosk pair")
