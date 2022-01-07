@@ -51,12 +51,6 @@ databaseChangeLog:
                     type: DATETIME
                     constraints:
                       nullable: true
-          # You have to add a unique key constraint before you can add a composite foreign key.
-          - addUniqueConstraint:
-              schemaName: checkin
-              tableName: kiosk_events
-              columnNames: kiosk_id, event_id
-              constraintName: kiosk_id_event_id_unique_constraint
           # This foreignKeyConstraint is technically not required to create a new checkin.
           # However, it accurately shows how the checkins tables relates to the kiosk_event table
           # and is required to populate a kioskEvent's checkins if you want to edit them in the future.
