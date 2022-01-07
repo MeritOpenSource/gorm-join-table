@@ -69,7 +69,7 @@ func createCheckin(db *gorm.DB, eventID, kioskID uint, name string) error {
 	checkin := Checkin{
 		EventID:         eventID,
 		KioskID:         kioskID,
-		CheckinDatetime: time.Time{},
+		CheckinDatetime: time.Now(),
 		Name:            name,
 	}
 	result := db.Create(&checkin)
