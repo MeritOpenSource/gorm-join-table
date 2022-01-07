@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-
 	"join_table/pkg/checkin"
 	"join_table/pkg/join"
+	"join_table/pkg/kiosk"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -25,6 +25,11 @@ func main() {
 	}
 
 	err = checkin.Run(db)
+	if err != nil {
+		panic(err)
+	}
+
+	err = kiosk.Run(db)
 	if err != nil {
 		panic(err)
 	}

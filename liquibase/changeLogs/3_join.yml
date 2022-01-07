@@ -12,8 +12,8 @@ databaseChangeLog:
                     name: kiosk_id
                     type: BIGINT
                     constraints:
-                      pimaryKey: true
-                      pimaryKeyName: pk_kiosk_events
+                      primaryKey: true
+                      primaryKeyName: kiosk_events_pkey
                       nullable: false
                       foreignKeyName: fk_kiosk_id
                       references: checkin.kiosks(id)
@@ -22,7 +22,7 @@ databaseChangeLog:
                     type: BIGINT
                     constraints:
                       primaryKey: true
-                      pimaryKeyName: pk_kiosk_events
+                      primaryKeyName: kiosk_events_pkey
                       nullable: false
                       foreignKeyName: fk_event_id
                       references: checkin.events(id)
