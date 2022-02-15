@@ -12,8 +12,6 @@ databaseChangeLog:
                     name: kiosk_id
                     type: BIGINT
                     constraints:
-                      primaryKey: true
-                      primaryKeyName: pk_kiosk_events
                       nullable: false
                       foreignKeyName: fk_kiosk_id
                       references: checkin.kiosks(id)
@@ -21,8 +19,11 @@ databaseChangeLog:
                     name: event_id
                     type: BIGINT
                     constraints:
-                      primaryKey: true
-                      primaryKeyName: pk_kiosk_events
                       nullable: false
                       foreignKeyName: fk_event_id
                       references: checkin.events(id)
+          - addPrimaryKey:
+              schemaName: checkin
+              tableName: kiosk_events
+              constraintName: pk_kiosk_events
+              columnNames: kiosk_id, event_id
